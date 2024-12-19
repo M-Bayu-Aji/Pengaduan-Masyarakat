@@ -53,4 +53,8 @@ class User extends Authenticatable
     public function staffProvince() {
         return $this->hasOne(StaffProvince::class);
     }
+
+    public function responses() {
+        return $this->hasMany(Response::class);
+    }
 }

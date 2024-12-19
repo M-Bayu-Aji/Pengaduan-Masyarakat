@@ -20,9 +20,11 @@
         <div class="bg-white p-4 rounded-lg shadow-md w-full">
             @foreach ($comments as $comment)
                 @if ($comment->report_id == $report->id)
-                    <p>{{ $comment->user->email }}</p>
-                    <p>{{ \Carbon\Carbon::parse($comment->created_at)->locale('id')->translatedFormat('l, d F Y') }}</p>
-                    <p>{{ $comment->comment }}</p>
+                    <div class="bg-white p-3 rounded my-2 shadow-md">
+                        <p class="text-blue-700 underline">{{ $comment->user->email }}</p>
+                        <p class="text-gray-500">{{ \Carbon\Carbon::parse($comment->created_at)->locale('id')->translatedFormat('l, d F Y') }}</p>
+                        <p>{{ $comment->comment }}</p>
+                    </div>
                 @endif
             @endforeach
             <form action="{{ route('report.comment_proses') }}" method="POST">

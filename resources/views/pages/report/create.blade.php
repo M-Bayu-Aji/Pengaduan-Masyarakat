@@ -1,79 +1,128 @@
 @extends('templates.app')
 
 @section('content')
-    <div class="min-h-screen flex items-center justify-center bg-gray-100">
-        <div class="bg-white shadow-lg rounded-lg w-full max-w-xl p-6">
+    <div class="w-full md:w-2/3 p-4">
+        <div class="bg-white shadow-2xl rounded-xl p-8">
             @if ($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                    <strong class="font-bold">Terjadi kesalahan!</strong>
-                    <span class="block sm:inline">Silakan periksa kembali inputan Anda.</span>
-                    <ul class="mt-2 list-disc list-inside text-sm text-red-600">
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <strong class="font-bold">Terjadi kesalahan!</strong>
+                    </div>
+                    <ul class="mt-2 list-disc list-inside text-sm">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>
             @endif
-            <h1 class="text-2xl font-bold text-orange-600 mb-4">Keluhan</h1>
-            <form method="POST" action="{{ route('report.proses') }}" enctype="multipart/form-data" class="space-y-4">
+
+            <div class="text-center mb-6">
+                <h1 class="text-3xl font-bold text-orange-600">
+                    <i class="fas fa-edit mr-2"></i>Buat Pengaduan
+                </h1>
+                <p class="text-gray-600">Silakan isi form pengaduan di bawah ini</p>
+            </div>
+
+            <form method="POST" action="{{ route('report.proses') }}" enctype="multipart/form-data" class="space-y-6">
                 @csrf
-                <div>
-                    <label for="province" class="block text-sm font-medium text-gray-700">Provinsi*</label>
-                    <select id="province" name="province" class="form-control">
-                        <option value="" disabled hidden selected>Pilih</option>
-                    </select>
+
+                <!-- Location Selection Group -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-map-marker-alt text-orange-600 mr-1"></i> Provinsi
+                        </label>
+                        <select id="province" name="province" class="form-select">
+                            <option value="" disabled hidden selected>Pilih Provinsi</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-city text-orange-600 mr-1"></i> Kota/Kabupaten
+                        </label>
+                        <select id="regency" name="regency" class="form-select" disabled>
+                            <option value="" disabled hidden selected>Pilih Kota</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-building text-orange-600 mr-1"></i> Kecamatan
+                        </label>
+                        <select id="district" name="district" class="form-select" disabled>
+                            <option value="" disabled hidden selected>Pilih Kecamatan</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-home text-orange-600 mr-1"></i> Kelurahan
+                        </label>
+                        <select id="village" name="village" class="form-select" disabled>
+                            <option value="" disabled hidden selected>Pilih Kelurahan</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div>
-                    <label for="regency" class="block text-sm font-medium text-gray-700">Kota/Kabupaten*</label>
-                    <select id="regency" name="regency" class="form-control" disabled>
-                        <option value="" disabled hidden selected>Pilih</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="district" class="block text-sm font-medium text-gray-700">Kecamatan*</label>
-                    <select id="district" name="district" class="form-control" disabled>
-                        <option value="" disabled hidden selected>Pilih</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="village" class="block text-sm font-medium text-gray-700">Kelurahan*</label>
-                    <select id="village" name="village" class="form-control" disabled>
-                        <option value="" disabled hidden selected>Pilih</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="type" class="block text-sm font-medium text-gray-700">Tipe*</label>
-                    <select id="type" name="type" class="form-control">
-                        <option value="" disabled hidden selected>Pilih</option>
+                <!-- Report Type -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-tags text-orange-600 mr-1"></i> Tipe Pengaduan
+                    </label>
+                    <select id="type" name="type" class="form-select">
+                        <option value="" disabled hidden selected>Pilih Tipe</option>
                         <option value="kejahatan" {{ old('type') == 'kejahatan' ? 'selected' : '' }}>Kejahatan</option>
-                        <option value="pembangunan" {{ old('type') == 'pembangunan' ? 'selected' : '' }}>Pembangunan</option>
+                        <option value="pembangunan" {{ old('type') == 'pembangunan' ? 'selected' : '' }}>Pembangunan
+                        </option>
                         <option value="sosial" {{ old('type') == 'sosial' ? 'selected' : '' }}>Sosial</option>
                     </select>
                 </div>
 
-                <div>
-                    <label for="description" class="block text-sm font-medium text-gray-700">Detail Keluhan*</label>
+                <!-- Description -->
+                <div class="flex flex-col">
+                    <label class="form-label">
+                        <i class="fas fa-comment-alt text-orange-600 mr-1"></i> Detail Keluhan :
+                    </label>
                     <textarea id="description" name="description" rows="4" class="form-control">{{ old('description') }}</textarea>
                 </div>
 
-                <div>
-                    <label for="image" class="block text-sm font-medium text-gray-700">Gambar Pendukung*</label>
-                    <input type="file" id="image" name="image" class="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-md cursor-pointer focus:outline-none">
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-image text-orange-600 mr-1"></i> Gambar Pendukung
+                    </label>
+                    <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                        <div class="space-y-1 text-center">
+                            <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-3"></i>
+                            <div class="flex text-sm text-gray-600">
+                                <label for="image"
+                                    class="relative cursor-pointer bg-white rounded-md font-medium text-orange-600 hover:text-orange-500">
+                                    <span>Upload file</span>
+                                    <input id="image" name="image" type="file" class="sr-only">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="flex items-start">
-                    <input id="statement" name="statement" type="checkbox" class="h-4 w-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
-                    <label for="statement" class="ml-2 text-sm text-gray-700">
-                        Laporan yang disampaikan sesuai dengan kebenaran.
+                <!-- Statement Checkbox -->
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" id="statement" name="statement"
+                        class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
+                    <label for="statement" class="text-sm text-gray-700">
+                        Saya menyatakan bahwa laporan yang disampaikan sesuai dengan kebenaran
                     </label>
                 </div>
 
-                <button type="submit" id="submit-button" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-no-drop" disabled>
-                    Kirim
+                <!-- Submit Button -->
+                <button type="submit" id="submit-button" disabled
+                    class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded-lg
+                       flex items-center justify-center space-x-2 transition duration-300 ease-in-out
+                       disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Kirim Pengaduan</span>
                 </button>
             </form>
         </div>

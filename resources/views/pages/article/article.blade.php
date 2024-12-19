@@ -29,7 +29,7 @@
                                 class="w-32 h-32 object-cover rounded-lg shadow-sm">
                         </div>
                         <div class="flex-1">
-                            <a href="{{ route('report.comment', $report['id']) }}"
+                            <a href="{{ route('viewer', $report['id']) }}"
                                 class="text-xl font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-300 block mb-2">
                                 {{ strlen($report['description']) > 50 ? substr($report['description'], 0, 50) . '...' : $report['description'] }}
                             </a>
@@ -38,7 +38,7 @@
                                     <i class="fas fa-eye text-gray-400"></i>
                                     {{ number_format($report['viewers']) }} viewers
                                 </span>
-                                    <div><i class="fas fa-heart"></i> {{ count(json_decode($report->voting ?? '[]')) }}</div>
+                                    <div><i class="fas fa-heart"></i> {{ is_array(json_decode($report->voting)) ? count(json_decode($report->voting)) : 0 }}</div>
                                     <div><i class="fas fa-comment"></i> {{ count($report->comments) }}</div>
                             </div>
                             <div class="space-y-1">

@@ -1,58 +1,56 @@
 @extends('templates.app')
 
 @section('content')
-    <div class="h-screen flex flex-col lg:flex-row bg-orange-500">
-        <!-- Login Section -->
-        <div class="w-full lg:w-1/2 flex flex-col justify-center items-center bg-white p-8 rounded-lg shadow-lg m-4">
-            <div class="w-full max-w-sm shadow p-5">
-                @if (Session::get('success'))
-                    <div class="alert mt-2 alert-success flex justify-between">
-                        {{ Session::get('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login</h2>
-                <form action="{{ route('proses.login.success') }}" method="POST" class="w-full max-w-sm">
-                    @csrf
-                    <div class="mb-4">
-                        <label for="email" class="block text-gray-700 font-medium">Email :</label>
-                        <input type="email" name="email" id="email" class="form-control"
+    <!-- Login Section -->
+    <div class="w-full lg:w-1/2 flex flex-col justify-center items-center p-8">
+        <div class="w-full max-w-md bg-white shadow-2xl rounded-xl p-8">
+            @if (Session::get('success'))
+                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                    {{ Session::get('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <h2 class="text-3xl font-bold mb-6 text-center text-orange-500">Login</h2>
+            
+            <form action="{{ route('proses.login.success') }}" method="POST" class="space-y-6">
+                @csrf
+                <div class="space-y-2">
+                    <label for="email" class="text-gray-700 font-semibold">Email</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </span>
+                        <input type="email" name="email" id="email" 
+                            class="py-2 pl-10 w-full rounded-lg border-gray-300 focus:border-orange-500 outline-none focus:ring focus:ring-orange-200" 
                             placeholder="Enter your email" required>
                     </div>
-                    <div class="mb-6">
-                        <label for="password" class="block text-gray-700 font-medium">Password :</label>
-                        <input type="password" name="password" id="password" class="form-control"
+                </div>
+
+                <div class="space-y-2">
+                    <label for="password" class="text-gray-700 font-semibold">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </span>
+                        <input type="password" name="password" id="password" 
+                            class=" py-2 pl-10 w-full rounded-lg border-gray-300 focus:border-orange-500 outline-none focus:ring focus:ring-orange-200" 
                             placeholder="Enter your password" required>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <button type="submit"
-                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">
-                            Login
-                        </button>
-                        <a href="{{ route('proses.register') }}" class="text-blue-500 hover:underline">
-                            Create an account
-                        </a>
-                    </div>
-                </form>
-            </div>
-        </div>
+                </div>
 
-        <!-- Image Section -->
-        <div class="w-full lg:w-1/2 relative overflow-hidden shadow-lg">
-            <img src="https://storage.googleapis.com/a1aa/image/skXnOaDgJjaqNF4LFgCdrTqP6XM9xoIpldFy9g2qfSwu9f5TA.jpg"
-                alt="Aerial view of a city street with cars and trees" class="w-full h-full object-cover opacity-50">
-            <div class="absolute inset-0 flex flex-col justify-center items-end space-y-4">
-                <button class="bg-green-700 text-white p-4 rounded-full shadow hover:bg-green-800 transition duration-300">
-                    <i class="fas fa-home"></i>
-                </button>
-                <button class="bg-green-700 text-white p-4 rounded-full shadow hover:bg-green-800 transition duration-300">
-                    <i class="fas fa-exclamation"></i>
-                </button>
-                <a href="{{ route('report.create') }}"
-                    class="no-underline hover:underline bg-green-700 text-white p-4 rounded-full">
-                    <i class="fas fa-pen"></i> Buat pengaduan
-                </a>
-            </div>
+                <div class="flex items-center justify-between pt-2">
+                    <button type="submit" 
+                        class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg transition duration-300 ease-in-out flex items-center space-x-2">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </button>
+                    <a href="{{ route('proses.register') }}" 
+                        class="text-orange-500 hover:text-orange-600 hover:underline transition duration-300">
+                        Create an account
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 @endsection

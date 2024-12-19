@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class ResponseProgress extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'response_id',
+        'history',
+    ];
+
+    protected $casts = [
+        'history' => 'array'
+    ];
+
+    public function response() {
+        return $this->belongsTo(Response::class);
+    }
 }

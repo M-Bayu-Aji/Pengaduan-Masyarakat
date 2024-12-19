@@ -2,38 +2,61 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\StaffProvince;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class StaffProvinceSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+      
         $provinces = [
-            'jabar',
-            'jatim',
-            'jateng'
+            'ACEH' => 'ACEH',
+            'SUMUT' => 'SUMATERA UTARA',
+            'SUMBAR' => 'SUMATERA BARAT',
+            'RIAU' => 'RIAU',
+            'JAMBI' => 'JAMBI',
+            'SUMSEL' => 'SUMATERA SELATAN',
+            'BENGKULU' => 'BENGKULU',
+            'LAMPUNG' => 'LAMPUNG',
+            'BABEL' => 'BANGKA BELITUNG',
+            'KEPRI' => 'KEPULAUAN RIAU',
+            'DKI' => 'DKI JAKARTA',
+            'JABAR' => 'JAWA BARAT',
+            'JATENG' => 'JAWA TENGAH',
+            'DIY' => 'DI YOGYAKARTA',
+            'JATIM' => 'JAWA TIMUR',
+            'BANTEN' => 'BANTEN',
+            'BALI' => 'BALI',
+            'NTB' => 'NUSA TENGGARA BARAT',
+            'NTT' => 'NUSA TENGGARA TIMUR',
+            'KALBAR' => 'KALIMANTAN BARAT',
+            'KALTENG' => 'KALIMANTAN TENGAH',
+            'KALSEL' => 'KALIMANTAN SELATAN',
+            'KALTIM' => 'KALIMANTAN TIMUR',
+            'KALUT' => 'KALIMANTAN UTARA',
+            'SULUT' => 'SULAWESI UTARA',
+            'SULTENG' => 'SULAWESI TENGAH',
+            'SULSEL' => 'SULAWESI SELATAN',
+            'SULTENGG' => 'SULAWESI TENGGARA',
+            'GORONTALO' => 'GORONTALO',
+            'SULBAR' => 'SULAWESI BARAT',
+            'MALUKU' => 'MALUKU',
+            'MALUT' => 'MALUKU UTARA',
+            'PABAR' => 'PAPUA BARAT',
+            'PAPUA' => 'PAPUA'
         ];
 
-        foreach ($provinces as $province) {
-            $user = User::firstOrCreate(
-                ['email' => 'head_staff_' . $province . '@gmail.com'],
-                [
-                    'role' => 'head_staff',
-                    'password' => Hash::make('tes123')
-                ]
-            );
+        foreach ($provinces as $key => $name) {
+            $user = User::where('email', 'head_staff_' . $key . '@gmail.com')->first();
 
-            StaffProvince::create([
-                'user_id' => $user->id,
-                'province' => $province
-            ]);
+            if ($user) {
+                StaffProvince::firstOrCreate(
+                    ['user_id' => $user->id],
+                    ['province' => $name]
+                );
+            }
         }
     }
 }

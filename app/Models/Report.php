@@ -21,6 +21,7 @@ class Report extends Model
         'viewers',
         'image',
         'statement',
+        'created_at',
     ];
 
     public function user() {
@@ -29,5 +30,9 @@ class Report extends Model
 
     public function comments() {
         return $this->hasMany(Comment::class);
+    }
+
+    public function responses() {
+        return $this->hasOne(Response::class);
     }
 }

@@ -21,17 +21,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($accounts as $account)
+                        @foreach ($accounts->where('staffProvince.province', auth()->user()->staffProvince->province) as $account)
                             <tr>
                                 <td class="py-2 px-4 border-b">{{ $loop->iteration }}</td>
                                 <td class="py-2 px-4 border-b">{{ $account['email'] }}</td>
                                 <td class="py-2 px-4 border-b">
-                                    <button class="bg-blue-500 text-white px-4 py-1 rounded mr-2">Reset</button>
-                                    <form action="{{ route('head.staff.delete', $account['id']) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="bg-red-500 text-white px-4 py-1 rounded">Hapus</button>
-                                    </form>
+                                    <div class="flex space-x-2">
+                                        <form action="{{ route('head.staff.reset', $account['id']) }}" method="POST">
+                                            @csrf
+                                            <button type="submit"
+                                                    class="transition-all duration-300 ease-in-out bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                                                <i class="fas fa-redo-alt mr-1"></i> Reset
+                                            </button>
+                                        </form>
+                                        
+                                        <form action="{{ route('head.staff.delete', $account['id']) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" 
+                                                    class="transition-all duration-300 ease-in-out bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus akun ini?')">
+                                                <i class="fas fa-trash-alt mr-1"></i> Hapus
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -46,13 +59,15 @@
                     <input type="hidden" name="role" value="staff">
                     <div class="mb-4">
                         <label for="email" class="block text-gray-700">Email</label>
-                        <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" name="email"
-                            placeholder="Email">
+                        <input type="email" id="email"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            name="email" placeholder="Email">
                     </div>
                     <div class="mb-4">
                         <label for="password" class="block text-gray-700">Sandi</label>
-                        <input type="password" id="password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Sandi"
-                            name="password">
+                        <input type="password" id="password"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            placeholder="Sandi" name="password">
                     </div>
                     <button type="submit" class="bg-green-700 text-white px-4 py-2 rounded">Buat</button>
                 </form>

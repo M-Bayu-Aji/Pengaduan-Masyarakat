@@ -3,6 +3,7 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StaffProvinceController;
+use App\Models\StaffProvince;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,7 +38,6 @@ Route::middleware(['IsLogin'])->group(function () {
     Route::name('report.')->prefix('report')->group(function () {
         Route::get('/create', [ReportController::class, 'index'])->name('create');
         Route::post('/proses', [ReportController::class, 'store'])->name('proses');
-        Route::get('/report-user', [ReportController::class, 'show'])->name('user');
         Route::get('/report-user-me', [ReportController::class, 'reportUser'])->name('you');
         Route::delete('/hapus-product/{id}', [ReportController::class, 'destroy'])->name('delete');
         Route::get('report/{id}', [ReportController::class, 'comment'])->name('comment');
@@ -46,9 +46,17 @@ Route::middleware(['IsLogin'])->group(function () {
     });
 });
 
+Route::get('/viewer/{id}', [ReportController::class, 'viewer'])->name('viewer');
+
 Route::middleware(['IsStaff'])->group(function () {
     Route::name('staff.')->prefix('staff')->group(function () {
         Route::get('report', [StaffProvinceController::class, 'index'])->name('report');
+        Route::post('/export-all', [StaffProvinceController::class, 'exportExcel'])->name('export');
+        Route::get('/response/report/{id}', [StaffProvinceController::class, 'responseDetail'])->name('response.detail');
+        Route::post('/response/report/new/{id}', [StaffProvinceController::class, 'response'])->name('response');
+        Route::post('/response/report/done/{id}', [StaffProvinceController::class, 'done'])->name('done.progress');
+        Route::post('report/progress', [StaffProvinceController::class, 'addProgress'])->name('addProgress');
+        Route::delete('delete-progress/{id}', [StaffProvinceController::class, 'deleteProgress'])->name('delete.progress');
     });
 });
 
@@ -58,9 +66,9 @@ Route::middleware(['IsHeadStaff'])->group(function () {
         Route::get('create-account', [StaffProvinceController::class, 'createAccount'])->name('account');
         Route::post('create-account-proses', [StaffProvinceController::class, 'store'])->name('create.acc');
         Route::delete('delete-account/{id}', [StaffProvinceController::class, 'destroy'])->name('delete');
+        Route::post('/reset-password/{id}', [StaffProvinceController::class, 'resetPassword'])->name('reset');
     });
 });
 
 Route::get('article', [LoginController::class, 'welcomeArticle'])->name('welcome_article');
-Route::post('/report/increment-viewers/{id}', [ReportController::class, 'viewers'])->name('increment.viewers');
 Route::get('/reports/search', [ReportController::class, 'search'])->name('reports.search');

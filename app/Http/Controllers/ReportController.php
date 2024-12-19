@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
 use App\Models\Report;
+use App\Models\Comment;
+use App\Models\ResponseProgress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,7 +26,8 @@ class ReportController extends Controller
     public function reportUser()
     {
         $reports = Report::all();
-        return view('dashboard.guest.laporan_user', compact('reports'), [
+        $progress = ResponseProgress::all();
+        return view('dashboard.guest.laporan_user', compact('reports', 'progress'), [
             'title' => 'Laporan User Anda'
         ]);
     }
@@ -67,7 +69,7 @@ class ReportController extends Controller
             'statement' => false,
         ]);
 
-        return redirect()->route('report.user')->with('success', 'Report created successfully.');
+        return redirect()->route('report.you')->with('success', 'Report created successfully.');
     }
 
     // Helper function to fetch name from API
@@ -77,25 +79,25 @@ class ReportController extends Controller
         $item = collect($data)->firstWhere('id', $id);
         return $item['name'] ?? 'Unknown';
     }
-    /**
-     * Display the specified resource.
-     */
-    public function show()
-    {
-        $reports = Report::all();
-        return view('dashboard.guest.laporan_user', compact('reports'), [
-            'title' => 'Laporan User'
-        ]);
-    } 
 
     public function comment($id)
     {
         $report = Report::findOrFail($id);
-        $report->increment('viewers', 1);
 
         $comments = Comment::all();
         return view('pages.article.comments', compact('report', 'comments'), [
             'title' => 'Comment'
+        ]);
+    }
+
+    public function viewer($id)
+    {
+        $report = Report::findOrFail($id);
+        $comments = Comment::all();
+        $report->increment('viewers', 1);
+
+        return view('pages.article.comments', compact('report', 'comments'), [
+            'title' => 'Article'
         ]);
     }
 
@@ -147,14 +149,6 @@ class ReportController extends Controller
         return redirect()->back()->with('success', 'Terima kasih telah memberi vote!');
     }
 
-    public function searchIndex()
-    {
-        $provinces = Report::distinct()->pluck('province');
-        $reports = Report::all(); // Data default
-
-        return view('pages.article.article', compact('reports', 'provinces'));
-    }
-
 
     public function search(Request $request)
     {
@@ -173,7 +167,6 @@ class ReportController extends Controller
             'title' => 'Searching Article'
         ]);
     }
-
 
     /**
      * Remove the specified resource from storage.

@@ -34,26 +34,53 @@
             </div>
 
             <!-- Sidebar Section -->
-            <div class="bg-gray-50 shadow rounded-lg p-4">
-                <h2 class="text-lg font-bold text-gray-800 mb-4">Informasi Pembuatan Pengaduan</h2>
-                <ol class="list-decimal list-inside space-y-2 text-gray-600">
-                    <li>Pengaduan bisa dibuat hanya jika Anda telah membuat akun sebelumnya.</li>
-                    <li>Keseluruhan data pada pengaduan bernilai <strong>BENAR dan DAPAT DIPERTANGGUNG
-                            JAWABKAN</strong>.
+            <div class="bg-white shadow-lg rounded-lg p-6 transition-all duration-300 hover:shadow-xl">
+                <h2 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Informasi Pembuatan Pengaduan</h2>
+                
+                <!-- Information List -->
+                <ol class="list-decimal list-inside space-y-4 text-gray-700">
+                    <li class="transition-colors duration-200 hover:text-gray-900">
+                        Pengaduan bisa dibuat hanya jika Anda telah membuat akun sebelumnya.
                     </li>
-                    <li>Seluruh bagian data perlu diisi.</li>
-                    <li>Pengaduan Anda akan ditanggapi dalam 2x24 Jam.</li>
-                    <li>Periksa tanggapan Kami pada <strong>Dashboard</strong> setelah Anda <strong>Login</strong>.</li>
-                    <li>Pembuatan pengaduan dapat dilakukan pada halaman berikut: <a href="#"
-                            class="text-blue-500 hover:underline">Ikuti Tautan</a>.</li>
+                    <li class="transition-colors duration-200 hover:text-gray-900">
+                        Keseluruhan data pada pengaduan bernilai 
+                        <strong class="text-red-600">BENAR dan DAPAT DIPERTANGGUNG JAWABKAN</strong>.
+                    </li>
+                    <li class="transition-colors duration-200 hover:text-gray-900">
+                        Seluruh bagian data perlu diisi.
+                    </li>
+                    <li class="transition-colors duration-200 hover:text-gray-900">
+                        Pengaduan Anda akan ditanggapi dalam 2x24 Jam.
+                    </li>
+                    <li class="transition-colors duration-200 hover:text-gray-900">
+                        Periksa tanggapan Kami pada <strong class="text-blue-600">Dashboard</strong> setelah Anda <strong class="text-blue-600">Login</strong>.
+                    </li>
+                    <li class="transition-colors duration-200 hover:text-gray-900">
+                        Pembuatan pengaduan dapat dilakukan pada halaman berikut: 
+                        <a href="#" class="text-blue-500 hover:text-blue-700 hover:underline">Ikuti Tautan</a>.
+                    </li>
                 </ol>
 
-                <div class="mt-6 space-y-2">
-                    <a href="{{ route('welcome') }}" class="block text-blue-500 hover:underline">Home</a>
-                    <a href="{{ route('report.you') }}" class="block text-blue-500 hover:underline">Laporan Saya</a>
-                    <a href="{{ route('logout') }}" class="block text-blue-500 hover:underline">Logout</a>
-                    <a href="{{ route('report.create') }}" class="block text-blue-500 hover:underline">Create
-                        Report</a>
+                <!-- Navigation Links -->
+                <div class="mt-8 space-y-3 border-t pt-4">
+                    <a href="{{ route('welcome') }}" 
+                       class="block px-4 py-2 text-gray-700 rounded-md hover:bg-blue-50 hover:text-blue-600 transition-all duration-200">
+                       <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                    <a href="{{ route('report.you') }}" 
+                       class="block px-4 py-2 text-gray-700 rounded-md hover:bg-blue-50 hover:text-blue-600 transition-all duration-200">
+                       <i class="fas fa-file-alt mr-2"></i>Laporan Saya
+                    </a>
+                    <a href="{{ route('report.create') }}" 
+                       class="block px-4 py-2 text-gray-700 rounded-md hover:bg-blue-50 hover:text-blue-600 transition-all duration-200">
+                       <i class="fas fa-plus-circle mr-2"></i>Create Report
+                    </a>
+                    @auth
+                    <a href="{{ route('logout') }}" 
+                       class="block px-4 py-2 text-gray-700 rounded-md hover:bg-red-50 hover:text-red-600 transition-all duration-200">
+                       <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </a>
+                    @endauth
                 </div>
             </div>
         </div>
