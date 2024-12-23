@@ -12,40 +12,54 @@
             @endif
 
             <h2 class="text-3xl font-bold mb-6 text-center text-orange-500">Login</h2>
-            
+
             <form action="{{ route('proses.login.success') }}" method="POST" class="space-y-6">
                 @csrf
+                <!-- Email Input Group -->
                 <div class="space-y-2">
-                    <label for="email" class="text-gray-700 font-semibold">Email</label>
+                    <label for="email" class="block text-gray-700 font-semibold text-sm">Email</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <i class="fas fa-envelope text-gray-400"></i>
                         </span>
-                        <input type="email" name="email" id="email" 
-                            class="py-2 pl-10 w-full rounded-lg border-gray-300 focus:border-orange-500 outline-none focus:ring focus:ring-orange-200" 
-                            placeholder="Enter your email" required>
+                        <input type="email" name="email" id="email" value="{{ old('email') }}"
+                            class="w-full py-2.5 pl-10 pr-4 text-sm text-gray-700 rounded-lg
+                                      border border-gray-300 
+                                      focus:border-orange-500 focus:ring-2 focus:ring-orange-200
+                                      transition duration-150 ease-in-out outline-none"
+                            placeholder="Enter your email address" required>
                     </div>
+                    @error('email')
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                    @enderror
                 </div>
 
+                <!-- Password Input Group -->
                 <div class="space-y-2">
-                    <label for="password" class="text-gray-700 font-semibold">Password</label>
+                    <label for="password" class="block text-gray-700 font-semibold text-sm">Password</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <i class="fas fa-lock text-gray-400"></i>
                         </span>
-                        <input type="password" name="password" id="password" 
-                            class=" py-2 pl-10 w-full rounded-lg border-gray-300 focus:border-orange-500 outline-none focus:ring focus:ring-orange-200" 
+                        <input type="password" name="password" id="password"
+                            class="w-full py-2.5 pl-10 pr-4 text-sm text-gray-700 rounded-lg
+                                      border border-gray-300 
+                                      focus:border-orange-500 focus:ring-2 focus:ring-orange-200
+                                      transition duration-150 ease-in-out outline-none"
                             placeholder="Enter your password" required>
                     </div>
+                    @error('password')
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="flex items-center justify-between pt-2">
-                    <button type="submit" 
-                        class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg transition duration-300 ease-in-out flex items-center space-x-2">
+                    <button type="submit"
+                        class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg transition duration-300 ease-in-out flex items-center space-x-2 outline-none">
                         <i class="fas fa-sign-in-alt"></i>
                         <span>Login</span>
                     </button>
-                    <a href="{{ route('proses.register') }}" 
+                    <a href="{{ route('proses.register') }}"
                         class="text-orange-500 hover:text-orange-600 hover:underline transition duration-300">
                         Create an account
                     </a>

@@ -129,7 +129,7 @@
 
                                         {{-- Progress Content --}}
                                         <div class="flex-1 bg-white/10 backdrop-blur-sm rounded-lg p-4 
-                                                    shadow-lg transform transition-all duration-300 hover:shadow-xl">
+                                                    shadow transform transition-all duration-300 hover:shadow-xl">
                                             <button class="text-amber-400 hover:text-amber-300 font-medium mb-1 
                                                          transition-colors duration-200">
                                                 {{ \Carbon\Carbon::parse($progres->created_at)->locale('id')->translatedFormat('l, d F Y') }}

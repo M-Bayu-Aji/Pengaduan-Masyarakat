@@ -55,13 +55,14 @@ class ReportExport implements FromCollection, WithHeadings, WithMapping
     public function map($report): array
     {
         // increment no urut
-        $this->no++;
-
+        
         // Skip records that don't match the logged-in user's province
         if ($report->province !== auth()->user()->staffProvince->province) {
             return [];
         }
-
+        
+        $this->no++;
+        
         return [
             $this->no,
             $report->user->email,

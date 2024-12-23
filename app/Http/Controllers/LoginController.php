@@ -28,17 +28,10 @@ class LoginController extends Controller
         ]);
     }
 
-    public function indexLogin()
-    {
-        return view('pages.login.login', [
-            'title' => 'Login'
-        ]);
-    }
-
     public function indexRegister()
     {
         return view('pages.login.register', [
-            'title' => 'Login'
+            'title' => 'Register'
         ]);
     }
 

@@ -17,6 +17,10 @@ class ResponseProgress extends Model
         'history' => 'array'
     ];
 
+    public function report() {
+        return $this->belongsTo(Report::class);
+    }
+
     public function response() {
         return $this->belongsTo(Response::class);
     }

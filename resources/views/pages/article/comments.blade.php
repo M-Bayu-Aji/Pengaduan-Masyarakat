@@ -1,7 +1,7 @@
 @extends('pages.templates_article.app')
 
 @section('content')
-    <div class="flex flex-col rounded w-full ">
+    <div class="flex flex-col justify-center rounded w-full ">
         <div class="bg-white mb-2.5 rounded-lg p-4 w-full mx-auto">
             <img alt="A densely populated urban area with many small houses and buildings" class="rounded-lg"
                 src="{{ asset('images/' . $report->image) }}" width="30%" />
@@ -12,9 +12,9 @@
                 <p class="text-gray-800 mt-2">
                     {{ $report->description }}
                 </p>
-                <button class="mt-4 bg-yellow-500 text-white py-2 px-4 rounded">
+                <span class="mt-4 bg-yellow-500 text-white py-2 px-4 rounded">
                     {{ $report->type }}
-                </button>
+                </span>
             </div>
         </div>
         <div class="bg-white p-4 rounded-lg shadow-md w-full">

@@ -216,5 +216,40 @@
                 $('#submit-button').prop('disabled', !this.checked);
             });
         });
+
+        // Preview image before upload
+        document.getElementById('image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Create or update preview div
+                    let previewDiv = document.getElementById('image-preview');
+                    if (!previewDiv) {
+                        previewDiv = document.createElement('div');
+                        previewDiv.id = 'image-preview';
+                        previewDiv.className = 'mt-3';
+                        document.querySelector('input[name="image"]').parentElement.parentElement.parentElement
+                            .appendChild(previewDiv);
+                    }
+                    previewDiv.innerHTML = `
+                        <div class="relative">
+                            <img src="${e.target.result}" class="max-w-full h-auto rounded-lg">
+                            <button type="button" onclick="removeImage()" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function removeImage() {
+            document.getElementById('image').value = '';
+            const previewDiv = document.getElementById('image-preview');
+            if (previewDiv) {
+                previewDiv.remove();
+            }
+        }
     </script>
 @endpush

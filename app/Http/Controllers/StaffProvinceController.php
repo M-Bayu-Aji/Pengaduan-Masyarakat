@@ -21,14 +21,18 @@ class StaffProvinceController extends Controller
     public function index()
     {
         $reports = Report::all();
-        $responseProgress = ResponseProgress::with('response')->get();
+        $responseProgress = Response::whereHas('report', function ($query) {
+            $query->where('province', auth()->user()->staffProvince->province);
+        })->get();
+        $reports_count = count($reports->where('province', auth()->user()->staffProvince->province));
+        $responseProgress_count = count($responseProgress);
 
         if (auth()->user()->role == 'staff') {
             return view('dashboard.staff.dash_staff', compact('reports'), [
                 'title' => 'Dashboard Staff'
             ]);
         } else {
-            return view('dashboard.head_staff.dahs_head', compact('reports', 'responseProgress'), [
+            return view('dashboard.head_staff.dahs_head', compact('reports_count', 'responseProgress_count'), [
                 'title' => 'Report'
             ]);
         }
@@ -105,7 +109,7 @@ class StaffProvinceController extends Controller
             $reports = Report::with('responses')->get();
         }
 
-        return Excel::download(new ReportExport($request->date), 'laporan-' . ($request->date ?? 'all') . '.xlsx');
+        return Excel::download(new ReportExport($request->date), 'laporan-' . ($request->date ?? 'seluruh') . '.xlsx');
     }
 
     public function responseDetail(Request $request, $id)
@@ -117,6 +121,7 @@ class StaffProvinceController extends Controller
             'title' => 'Response Report'
         ]);
     }
+
     public function response(Request $request, $id)
     {
         $request->validate([
@@ -189,6 +194,6 @@ class StaffProvinceController extends Controller
     {
         User::findOrFail($id)->delete();
 
-        return redirect()->back()->with('success', 'Berhasil Menghapus Data Pengaduan!');
+        return redirect()->back()->with('success', 'Berhasil Menghapus Data Akun!');
     }
 }
