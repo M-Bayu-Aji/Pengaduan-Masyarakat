@@ -3,32 +3,50 @@
 @section('content')
     <div class="container mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-4">
         {{-- Header Section --}}
+        @if (Session::get('success'))
+            <div
+                class="alert m-3 alert-success flex items-center justify-between p-4 bg-green-100 text-green-700 rounded-lg">
+                <span>{{ Session::get('success') }}</span>
+                <button type="button" class="text-green-600 hover:text-green-800 transition-colors duration-200"
+                    data-bs-dismiss="alert" aria-label="Close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        @endif
         <div class="flex justify-between items-center p-6 border-b">
-            <h2 class="text-2xl font-bold text-gray-800">Table Example</h2>
-            <div class="flex flex-col">
+            {{-- Title --}}
+            <h2 class="text-2xl font-bold text-gray-800">
+                <i class="fas fa-table mr-2"></i>
+                Data Pengaduan Masyarakat
+            </h2>
+
+            {{-- Export Button Group --}}
+            <div class="relative">
                 <button
-                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg flex items-center transition duration-300">
-                    <span>Export (.xlsx)</span>
+                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg flex items-center transition duration-300 shadow-sm">
+                    <i class="fas fa-file-export mr-2"></i>
+                    <span>Export Data</span>
                     <i class="fas fa-caret-down ml-2"></i>
                 </button>
-                <div class="relative inline-block">
-                    <div id="exportDropdown"
-                        class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden">
-                        <div class="py-2">
-                            <form action="{{ route('staff.export') }}" method="POST">
-                                @csrf
-                                <button type="submit"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition duration-150 no-underline">
-                                    <i class="fas fa-file-export mr-2"></i>
-                                    Seluruh Data
-                                </button>
-                            </form>
-                            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition duration-150"
-                                data-bs-toggle="modal" data-bs-target="#fileModal">
-                                <i class="fas fa-calendar-alt mr-2"></i>
-                                Berdasarkan Tanggal
+
+                {{-- Export Dropdown Menu --}}
+                <div id="exportDropdown"
+                    class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-100">
+                    <div class="py-1">
+                        <form action="{{ route('staff.export') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition duration-150 flex items-center">
+                                <i class="fas fa-file-export mr-2 text-green-600"></i>
+                                Export Semua Data
                             </button>
-                        </div>
+                        </form>
+                        <button
+                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition duration-150 flex items-center"
+                            data-bs-toggle="modal" data-bs-target="#fileModal">
+                            <i class="fas fa-calendar-alt mr-2 text-blue-600"></i>
+                            Export by Tanggal
+                        </button>
                     </div>
                 </div>
             </div>
@@ -39,10 +57,10 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead>
                     <tr class="bg-gray-50">
-                        <th class="py-3 px-6 text-left text-sm font-semibold text-gray-700">Gambar &amp; Pengirim</th>
-                        <th class="py-3 px-6 text-left text-sm font-semibold text-gray-700">Lokasi &amp; Tanggal</th>
-                        <th class="py-3 px-6 text-left text-sm font-semibold text-gray-700">Deskripsi</th>
-                        <th class="py-3 px-6 text-left text-sm font-semibold text-gray-700">
+                        <th class="py-3 px-6 text-center text-sm font-semibold text-gray-700">Gambar &amp; Pengirim</th>
+                        <th class="py-3 px-6 text-center text-sm font-semibold text-gray-700">Lokasi &amp; Tanggal</th>
+                        <th class="py-3 px-6 text-center text-sm font-semibold text-gray-700">Deskripsi</th>
+                        <th class="py-3 px-6 text-center text-sm font-semibold text-gray-700">
                             <div class="flex items-center">
                                 <span>Jumlah Vote</span>
                                 <div class="ml-2 flex flex-col">
@@ -55,13 +73,13 @@
                                 </div>
                             </div>
                         </th>
-                        <th class="py-3 px-6 text-left text-sm font-semibold text-gray-700">Aksi</th>
+                        <th class="py-3 text-center px-6 text-sm font-semibold text-gray-700">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                     @foreach ($reports->where('province', auth()->user()->staffProvince->province) as $report)
                         <tr class="hover:bg-gray-50 transition duration-150">
-                            <td class="py-4 px-6">
+                            <td class="py-4 px-6 flex justify-center">
                                 <div class="flex items-center">
                                     <button onclick="showModalImage('{{ asset('images/' . $report->image) }}')"
                                         class="focus:outline-none">
@@ -75,23 +93,31 @@
                                     </a>
                                 </div>
                             </td>
-                            <td class="py-4 px-6">
+                            <td class="py-4 px-6 text-center">
                                 <div class="text-gray-900 font-medium">{{ $report->province }}</div>
                                 <div class="text-sm text-gray-500">
                                     {{ \Carbon\Carbon::parse($report->created_at)->locale('id')->translatedFormat('l, d F Y') }}
                                 </div>
                             </td>
-                            <td class="py-4 px-6 text-gray-800">{{ $report->description }}</td>
-                            <td class="py-4 px-6 text-gray-800">
+                            <td class="py-4 px-6 text-center text-gray-800">{{ $report->description }}</td>
+                            <td class="py-4 px-6 text-center text-gray-800">
                                 {{ is_array(json_decode($report->voting)) ? count(json_decode($report->voting)) : 0 }}
                             </td>
-                            <td class="py-4 px-6">
+                            <td class="py-4 px-6 flex justify-center">
                                 <div class="relative">
-                                    <button onclick="toggleActionMenu({{ $report->id }})"
-                                        class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg flex items-center transition duration-150">
-                                        <span>Aksi</span>
-                                        <i class="fas fa-caret-down ml-2"></i>
-                                    </button>
+                                    @if ($report->responses->response_status === 'DONE' || 'REJECTED')
+                                        <div class="block relative px-4 py-3 text-gray-700 rounded-lg">
+                                            <i class="fas fa-info-circle mr-2"></i>
+                                            Status :
+                                            {{ $report->responses->response_status }}
+                                        </div>
+                                    @else
+                                        <button onclick="toggleActionMenu({{ $report->id }})"
+                                            class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg flex items-center transition duration-150">
+                                            <span>Action</span>
+                                            <i class="fas fa-caret-down ml-2"></i>
+                                        </button>
+                                    @endif
                                     <div id="actionMenu{{ $report->id }}"
                                         class="hidden absolute right-0 mt-1 w-48 bg-white rounded-lg shadow border border-gray-100">
                                         <button
@@ -298,5 +324,12 @@
             let tbody = document.getElementsByTagName('tbody')[0];
             rows.forEach(row => tbody.appendChild(row));
         }
+
+        // Alert auto-close
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function() {
+                $(this).remove();
+            });
+        }, 5000);
     </script>
 @endpush

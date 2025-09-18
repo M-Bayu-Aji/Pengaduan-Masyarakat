@@ -1,17 +1,17 @@
 @extends('pages.templates_article.app')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <!-- Search Section -->
-        <div class="mb-8 bg-white rounded-lg shadow-sm p-6">
+        <div class="p-6 mb-8 bg-white rounded-lg shadow-sm">
             <div class="max-w-3xl mx-auto">
                 <form action="{{ route('reports.search') }}" method="GET" id="search-form" class="flex gap-4">
                     <select id="province-select" name="province"
-                        class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                        class="flex-1 px-4 py-2 transition-all border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Pilih Provinsi</option>
                     </select>
                     <button type="submit"
-                        class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition-all duration-300 flex items-center gap-2">
+                        class="flex items-center gap-2 px-6 py-2 text-white transition-all duration-300 bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
                         <i class="fas fa-search"></i>
                         Cari
                     </button>
@@ -22,31 +22,31 @@
         <!-- Complaint List -->
         <div id="complaint-list" class="space-y-6">
             @foreach ($reports as $report)
-                <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-6">
+                <div class="p-6 transition-all duration-300 bg-white shadow-sm rounded-xl hover:shadow-md">
                     <div class="flex items-start gap-6">
                         <div class="flex-shrink-0">
                             <img src="{{ asset('images/' . $report->image) }}" alt="Complaint Image"
-                                class="w-32 h-32 object-cover rounded-lg shadow-sm">
+                                class="object-cover w-32 h-32 rounded-lg shadow-sm">
                         </div>
                         <div class="flex-1">
                             <a href="{{ route('viewer', $report['id']) }}"
-                                class="text-xl font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-300 block mb-2">
+                                class="block mb-2 text-xl font-semibold text-gray-800 transition-colors duration-300 hover:text-blue-600">
                                 {{ strlen($report['description']) > 50 ? substr($report['description'], 0, 50) . '...' : $report['description'] }}
                             </a>
-                            <div class="flex items-center gap-3 text-sm text-gray-500 mb-3">
+                            <div class="flex items-center gap-3 mb-3 text-sm text-gray-500">
                                 <span class="flex items-center gap-2">
-                                    <i class="fas fa-eye text-gray-400"></i>
+                                    <i class="text-gray-400 fas fa-eye"></i>
                                     {{ number_format($report['viewers']) }} viewers
                                 </span>
                                     <div><i class="fas fa-heart"></i> {{ is_array(json_decode($report->voting)) ? count(json_decode($report->voting)) : 0 }}</div>
                                     <div><i class="fas fa-comment"></i> {{ count($report->comments) }}</div>
                             </div>
                             <div class="space-y-1">
-                                <p class="text-sm text-gray-600 flex items-center gap-2">
-                                    <i class="fas fa-user text-gray-400"></i>
+                                <p class="flex items-center gap-2 text-sm text-gray-600">
+                                    <i class="text-gray-400 fas fa-user"></i>
                                     {{ $report->user->email }}
                                 </p>
-                                <p class="text-xs text-gray-400 flex items-center gap-2">
+                                <p class="flex items-center gap-2 text-xs text-gray-400">
                                     <i class="fas fa-clock"></i>
                                     {{ \Carbon\Carbon::parse($report->created_at)->diffForHumans() }}
                                 </p>

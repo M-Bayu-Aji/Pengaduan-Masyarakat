@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -17,43 +19,15 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('tes123')
             ]
         );
-        
-        $provinces = [
-            'aceh' => 'Aceh',
-            'sumut' => 'Sumatera Utara',
-            'sumbar' => 'Sumatera Barat',
-            'riau' => 'Riau',
-            'jambi' => 'Jambi',
-            'sumsel' => 'Sumatera Selatan',
-            'bengkulu' => 'Bengkulu',
-            'lampung' => 'Lampung',
-            'babel' => 'Kepulauan Bangka Belitung',
-            'kepri' => 'Kepulauan Riau',
-            'jakarta' => 'DKI Jakarta',
-            'jabar' => 'Jawa Barat',
-            'jateng' => 'Jawa Tengah',
-            'yogya' => 'DI Yogyakarta',
-            'jatim' => 'Jawa Timur',
-            'banten' => 'Banten',
-            'bali' => 'Bali',
-            'ntb' => 'Nusa Tenggara Barat',
-            'ntt' => 'Nusa Tenggara Timur',
-            'kalbar' => 'Kalimantan Barat',
-            'kalteng' => 'Kalimantan Tengah',
-            'kalsel' => 'Kalimantan Selatan',
-            'kaltim' => 'Kalimantan Timur',
-            'kalut' => 'Kalimantan Utara',
-            'sulut' => 'Sulawesi Utara',
-            'sulteng' => 'Sulawesi Tengah',
-            'sulsel' => 'Sulawesi Selatan',
-            'sultengg' => 'Sulawesi Tenggara',
-            'gorontalo' => 'Gorontalo',
-            'sulbar' => 'Sulawesi Barat',
-            'maluku' => 'Maluku',
-            'malut' => 'Maluku Utara',
-            'papuabarat' => 'Papua Barat',
-            'papua' => 'Papua'
-        ];
+
+        $response = Http::get('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
+        $apiProvinces = $response->json();
+
+        $provinces = [];
+        foreach ($apiProvinces as $province) {
+            $key = Str::slug($province['name']);
+            $provinces[$key] = $province['name'];
+        }
 
         foreach ($provinces as $key => $name) {
             User::firstOrCreate(

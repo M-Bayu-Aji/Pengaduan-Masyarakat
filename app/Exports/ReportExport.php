@@ -4,9 +4,9 @@ namespace App\Exports;
 
 use Carbon\Carbon;
 use App\Models\Report;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\FromCollection;
 
 class ReportExport implements FromCollection, WithHeadings, WithMapping
 {

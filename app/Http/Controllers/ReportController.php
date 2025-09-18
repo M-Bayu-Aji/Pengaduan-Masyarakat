@@ -20,6 +20,12 @@ class ReportController extends Controller
         ]);
     }
 
+    public function getAllReports()
+    {
+        $reports = Report::all();
+        return response()->json($reports);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -44,7 +50,7 @@ class ReportController extends Controller
             'village' => 'required',
             'type' => 'required',
             'description' => 'required',
-            'image' => 'required|image|max:2048',
+            'image' => 'required|image',
             'statement' => 'accepted',
         ]);
 
@@ -120,32 +126,32 @@ class ReportController extends Controller
     public function voteReport($id)
     {
         $report = Report::findOrFail($id); // Mencari laporan berdasarkan ID
-    
+
         // Cek apakah user sudah memberikan vote sebelumnya
         $userId = Auth::id(); // Ambil ID user yang sedang login
         $voting = $report->voting ? json_decode($report->voting, true) : []; // Mendapatkan data voting yang sudah ada
-    
+
         // Jika user sudah memberi vote, maka unvote (hapus vote)
         if (in_array($userId, $voting)) {
             // Hapus userId dari array voting untuk unvote
-            $voting = array_filter($voting, function($vote) use ($userId) {
+            $voting = array_filter($voting, function ($vote) use ($userId) {
                 return $vote != $userId;
             });
-    
+
             // Menyimpan kembali voting yang telah diubah
             $report->voting = json_encode(array_values($voting)); // Reindex array untuk menghindari indeks yang hilang
             $report->save();
-    
+
             return redirect()->back()->with('success', 'Anda telah menghapus vote Anda pada laporan ini.');
         }
-    
+
         // Jika user belum memberi vote, beri vote
         $voting[] = $userId;
-    
+
         // Simpan kembali array voting ke database
         $report->voting = json_encode($voting);
         $report->save();
-    
+
         return redirect()->back()->with('success', 'Terima kasih telah memberi vote!');
     }
 

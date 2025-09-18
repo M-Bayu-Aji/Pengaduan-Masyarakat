@@ -51,7 +51,7 @@ class StaffProvinceSeeder extends Seeder
         foreach ($provinces as $key => $name) {
             $user = User::where('email', 'head_staff_' . $key . '@gmail.com')->first();
 
-            if ($user) {
+            if ($user) {    
                 StaffProvince::firstOrCreate(
                     ['user_id' => $user->id],
                     ['province' => $name]

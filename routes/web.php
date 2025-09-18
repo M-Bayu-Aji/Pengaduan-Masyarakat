@@ -32,7 +32,7 @@ Route::middleware(['IsLogout'])->group(function () {
     });
 });
 
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['IsLogin'])->group(function () {
     Route::name('report.')->prefix('report')->group(function () {

@@ -20,20 +20,27 @@ class StaffProvinceController extends Controller
      */
     public function index()
     {
+        // Check if user has staffProvince relationship
+        if (!auth()->user()->staffProvince) {
+            return redirect()->back()->with('error', 'Staff province information not found. Please contact administrator.');
+        }
+
         $reports = Report::all();
         $responseProgress = Response::whereHas('report', function ($query) {
             $query->where('province', auth()->user()->staffProvince->province);
         })->get();
+        $response_status = Response::all();
+
         $reports_count = count($reports->where('province', auth()->user()->staffProvince->province));
         $responseProgress_count = count($responseProgress);
 
         if (auth()->user()->role == 'staff') {
-            return view('dashboard.staff.dash_staff', compact('reports'), [
+            return view('dashboard.staff.dash_staff', compact('reports', 'response_status'), [
                 'title' => 'Dashboard Staff'
             ]);
         } else {
             return view('dashboard.head_staff.dahs_head', compact('reports_count', 'responseProgress_count'), [
-                'title' => 'Report'
+                'title' => 'Dashboard Head Staff'
             ]);
         }
     }
@@ -43,6 +50,11 @@ class StaffProvinceController extends Controller
      */
     public function createAccount()
     {
+        // Check if user has staffProvince relationship
+        if (!auth()->user()->staffProvince) {
+            return redirect()->back()->with('error', 'Staff province information not found. Please contact administrator.');
+        }
+
         $accounts = User::where('role', 'staff')->get();
         $province = auth()->user()->staffProvince->province;
         return view('dashboard.head_staff.account', compact('accounts', 'province'), [
@@ -55,6 +67,11 @@ class StaffProvinceController extends Controller
      */
     public function store(Request $request)
     {
+        // Check if user has staffProvince relationship
+        if (!auth()->user()->staffProvince) {
+            return redirect()->back()->with('error', 'Staff province information not found. Please contact administrator.');
+        }
+
         $request->validate([
             'role' => 'required',
             'email' => 'required',
@@ -135,7 +152,9 @@ class StaffProvinceController extends Controller
                 'staff_id' => auth()->user()->id
             ]);
 
-            return redirect()->route('staff.response.detail', $id)->with('success', 'Successfully updated report response');
+            return $request->responses === 'ON_PROCESS'
+                ? redirect()->route('staff.response.detail', $id)->with('success', 'Successfully updated report response')
+                : redirect()->back()->with('success', 'Successfully updated report response');
         }
 
         Response::create([

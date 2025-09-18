@@ -55,6 +55,6 @@ class User extends Authenticatable
     }
 
     public function responses() {
-        return $this->hasMany(Response::class);
+        return $this->hasMany(Response::class, 'staff_id');
     }
 }
